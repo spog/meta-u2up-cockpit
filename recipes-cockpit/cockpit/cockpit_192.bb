@@ -4,11 +4,11 @@ DESCRIPTION = "Cockpit makes it easy to administer your GNU/Linux servers via a 
 LICENSE = "LGPLv2+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4fbd65380cdd255951079008b364516c"
 
-SRC_URI  = "file://cockpit.pam"
-SRC_URI += "file://poky-aero"
+#SRC_URI  = "file://cockpit.pam"
+#SRC_URI += "file://poky-aero"
 SRC_URI += "https://github.com/cockpit-project/cockpit/releases/download/${PV}/cockpit-${PV}.tar.xz"
-SRC_URI[md5sum] = "af79651d3aea2e6140bb313961d7fad0"
-SRC_URI[sha256sum] = "87c67a61ab1e2cb9105a776ed89a18feb92675eb60ddf083b6c8ecf960b7546e"
+SRC_URI[md5sum] = "b6149d33a540cb40d54eb2e8b6596111"
+SRC_URI[sha256sum] = "ef211c614d66a413ccc7575ab089e9151779bf8c74ec254a3f32a1067c64cb36"
 
 inherit gettext pkgconfig autotools systemd distro_features_check
 
@@ -17,10 +17,11 @@ REQUIRED_DISTRO_FEATURES = "pam"
 EXTRA_AUTORECONF = "-I tools"
 EXTRA_OECONF = "--with-cockpit-user=root \
                 --with-cockpit-group=root \
-                --with-branding=default \
                 --disable-ssh \
                 --disable-doc \
                "
+
+#                --with-branding=default
 
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[pcp] = "--enable-pcp,--disable-pcp,pcp"
@@ -34,8 +35,13 @@ PACKAGES =+ "${PN}-bridge ${PN}-pcp ${PN}-docker ${PN}-ws ${PN}-system ${PN}-das
 
 FILES_${PN} += "${libdir}/firewalld \
                 ${libdir}/security \
+                ${libdir}/tmpfiles.d \
                 ${datadir}/appdata \
+                ${datadir}/metainfo \
+                ${datadir}/polkit-1 \
                 ${systemd_unitdir}/system/${PN}.socket \
+                ${systemd_unitdir}/system/${PN}.service \
+                ${systemd_unitdir}/system/${PN}-motd.service \
                 "
 
 FILES_${PN}-pcp =+ "${libexecdir}/cockpit-pcp \
@@ -102,3 +108,6 @@ do_install_append() {
 #    install -d ${D}${datadir}/cockpit/branding
 #    cp -r ${WORKDIR}/poky-aero ${D}${datadir}/cockpit/branding
 }
+
+RDEPENDS_${PN} = "bash"
+
