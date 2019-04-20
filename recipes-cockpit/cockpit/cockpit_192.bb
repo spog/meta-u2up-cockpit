@@ -4,7 +4,7 @@ DESCRIPTION = "Cockpit makes it easy to administer your GNU/Linux servers via a 
 LICENSE = "LGPLv2+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4fbd65380cdd255951079008b364516c"
 
-#SRC_URI  = "file://cockpit.pam"
+SRC_URI  = "file://cockpit.pam"
 #SRC_URI += "file://poky-aero"
 SRC_URI += "https://github.com/cockpit-project/cockpit/releases/download/${PV}/cockpit-${PV}.tar.xz"
 SRC_URI[md5sum] = "b6149d33a540cb40d54eb2e8b6596111"
@@ -102,12 +102,13 @@ do_install_append() {
 
     chmod 4750 ${D}${libexecdir}/cockpit-session
 
-#    install -d "${D}${sysconfdir}/pam.d"
-#    install -p -m 644 ${WORKDIR}/cockpit.pam ${D}${sysconfdir}/pam.d/cockpit
+    install -d "${D}${sysconfdir}/pam.d"
+    install -p -m 644 ${WORKDIR}/cockpit.pam ${D}${sysconfdir}/pam.d/cockpit
 
 #    install -d ${D}${datadir}/cockpit/branding
 #    cp -r ${WORKDIR}/poky-aero ${D}${datadir}/cockpit/branding
 }
 
 RDEPENDS_${PN} = "bash"
+RDEPENDS_${PN}-ws = "glib-networking"
 
