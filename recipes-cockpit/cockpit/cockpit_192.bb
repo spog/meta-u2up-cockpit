@@ -77,6 +77,9 @@ DEPENDS += "glib-2.0-native intltool-native"
 DEPENDS += "systemd gettext gtk+ json-glib polkit krb5 libpam"
 
 do_install_append() {
+    # Resolve conflict: firewalld-0.6.3 already provides "/usr/lib/firewalld/services/cockpit.xml"
+    rm -rf ${D}${libdir}/firewalld/services
+
     pkgdatadir=${datadir}/cockpit
 
     # fix up install location of these files
