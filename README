@@ -1,0 +1,6 @@
+The meta-u2up-cockpit layer
+===========================
+
+Provides "cockpit" - open web-based interface for Linux.
+This "cockpit" recipe is based on recipe from the "meta-intel-aero" layer.
+
